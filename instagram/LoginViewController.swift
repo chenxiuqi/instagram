@@ -31,7 +31,6 @@ class LoginViewController: UIViewController {
             if user != nil {
                 // log in credentials are correct and performs ViewController segue
                 print("You're logged in!")
-                //self.shouldPerformSegue(withIdentifier: "loginSegue", sender: nil)
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }
         }

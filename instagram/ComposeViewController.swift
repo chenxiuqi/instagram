@@ -86,6 +86,7 @@ class ComposeViewController: UIViewController, UIImagePickerControllerDelegate, 
                 print(error.localizedDescription)
             } else {
                 print("Image successfully posted!")
+                NotificationCenter.default.post(name: NSNotification.Name("postNotification"), object:nil)
             }
         }
         

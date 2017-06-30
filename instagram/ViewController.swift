@@ -68,6 +68,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             cell.userImage.layer.masksToBounds = true
         }
         
+        cell.postsPFObject = [post]
+        
         
         return cell
     }
@@ -77,7 +79,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         query.limit = 20
         query.addDescendingOrder("_created_at")
         query.includeKey("author")
-        
+        // query.whereKey("author", equalTo: PFUser.current()!)
         query.findObjectsInBackground { (post: [PFObject]?, error: Error?) in
             self.postsPFObject = post
             self.tableView.reloadData()
@@ -96,6 +98,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         refreshControl.endRefreshing()
         
     }
+    
     
     
     

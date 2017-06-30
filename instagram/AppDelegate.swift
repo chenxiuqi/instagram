@@ -37,11 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("postNotification"), object: nil, queue: OperationQueue.main) { (Notification) in
-            // returns user to sign up / sign in screen
+            // returns user to feed view
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let feedViewController = storyboard.instantiateViewController(withIdentifier: "MainTabBarController")
             self.window?.rootViewController = feedViewController
         }
+
+        // returns user to Profile View
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("updateNotification"), object: nil, queue: OperationQueue.main) { (Notification) in
+            // returns user to feed view
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let feedViewController = storyboard.instantiateViewController(withIdentifier: "ProfileViewController")
+            self.window?.rootViewController = feedViewController
+        }
+
         
         // user logout
         NotificationCenter.default.addObserver(forName: NSNotification.Name("logoutNotification"), object: nil, queue: OperationQueue.main) { (Notification) in

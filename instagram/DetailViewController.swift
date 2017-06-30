@@ -14,6 +14,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var timestampLabel: UILabel!
+    @IBOutlet weak var userImage: UIImageView!
+    @IBOutlet weak var userLabel: UILabel!
     
     var post: PFObject?
     
@@ -27,6 +29,8 @@ class DetailViewController: UIViewController {
             captionLabel.text = post["caption"] as? String
             let user = post["author"] as? PFUser
             usernameLabel.text = user?.username
+            userLabel.text = user?.username
+            let userProfileImageURL = user?["profile_picture"] as? PFFile
             
             if let date = user?.createdAt {
                 let dateFormatter = DateFormatter()
@@ -41,6 +45,13 @@ class DetailViewController: UIViewController {
                 self.postedImage.image = UIImage(data:imageData)
                 
             }
+            
+            userProfileImageURL?.getDataInBackground { (imageData:Data!,error: Error?) in
+                self.userImage.image = UIImage(data:imageData)
+                self.userImage.layer.cornerRadius = (self.userImage.frame.size.width / 2)
+                self.userImage.layer.masksToBounds = true
+            }
+            
         }
     }
     override func didReceiveMemoryWarning() {

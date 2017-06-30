@@ -26,7 +26,7 @@ class ComposeViewController: UIViewController, UIImagePickerControllerDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
-    // modally shows
+    // Take Photo
     @IBAction func onTakePhoto(_ sender: Any) {
         let vc = UIImagePickerController()
         vc.delegate = self
@@ -91,6 +91,11 @@ class ComposeViewController: UIViewController, UIImagePickerControllerDelegate, 
         }
         
         
+    }
+    
+    // gesture recognition
+    @IBAction func onTap(_ sender: Any) {
+        view.endEditing(true)
     }
     
     

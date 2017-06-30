@@ -22,7 +22,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         tableView.delegate = self as? UITableViewDelegate
         tableView.dataSource = self
         
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.fetchPosts), userInfo: nil, repeats: true)
+        fetchPosts()
         
         // Initialize a UIRefreshControl
         refreshControl = UIRefreshControl()
@@ -41,16 +41,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedCell", for: indexPath) as! FeedCell
         let post = postsPFObject![indexPath.row]
-      
+        
         let imageURL = post["media"] as? PFFile
         let caption = post["caption"] as? String
         let user = post["author"] as? PFUser
+        let userProfileImageURL = user?["profile_picture"] as? PFFile
+        
         cell.usernameLabel.text = user?.username
+        cell.usernameLabel1.text = user?.username
         cell.captionLabel.text = caption
         
         imageURL?.getDataInBackground { (imageData:Data!,error: Error?) in
-            cell.postedImage.image = UIImage(data:imageData)
+            cell.postedImage.image = UIImage(data:imageData) }
+        
+        if let date = user?.createdAt {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .medium
+            dateFormatter.timeStyle = .none
+            let dateString = dateFormatter.string(from: date)
+            cell.timestampLabel.text = dateString
         }
+        
+        userProfileImageURL?.getDataInBackground { (imageData:Data!,error: Error?) in
+            cell.userImage.image = UIImage(data:imageData)
+            cell.userImage.layer.cornerRadius = (cell.userImage.frame.size.width / 2)
+            cell.userImage.layer.masksToBounds = true
+        }
+        
         
         return cell
     }
@@ -60,7 +77,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         query.limit = 20
         query.addDescendingOrder("_created_at")
         query.includeKey("author")
-
+        
         query.findObjectsInBackground { (post: [PFObject]?, error: Error?) in
             self.postsPFObject = post
             self.tableView.reloadData()
@@ -80,14 +97,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
     }
     
-//    @IBAction func onLogout(_ sender: Any) {
-//        print("hello")
-//        PFUser.logOutInBackground { (error: Error?) in
-//        }
-//        NotificationCenter.default.post(name: NSNotification.Name("logoutNotification"), object:nil)
-//    }
-    
-
     
     
     override func didReceiveMemoryWarning() {
@@ -105,7 +114,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         
     }
-
+    
     
 }
 

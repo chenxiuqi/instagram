@@ -57,6 +57,7 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 ## Notes
 
 Describe any challenges encountered while building the app.
+One of my challenges related to the implementation of the "like" functions. I did not quite understand how to access the "count" element in my Parse table but I eventually understood that I had to put my onTap action for the like button within the cell's Swift file and not in the view controller. I also faced several challenges when I implemented my "Edit Profile" functionalities because I was not quite sure how to save the data in the text fields (such as name and biography) to Parse.
 
 ## License
 
